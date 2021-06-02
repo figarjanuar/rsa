@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>RSA</title>
+  </head>
+  <body class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 my-auto mx-auto">
+                <div class="text-center mt-3 mb-4">
+                    <h1>Tugas Besar 1</h1>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Figar Januari Ramadhan</h5>
+                      <p class="card-text">41519120100</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Albert</h5>
+                      <p class="card-text">41519120012</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Adani Mustafid</h5>
+                      <p class="card-text">41519120086</p>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Program Enkripsi</h5>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="algor">Algoritma</label>
+                                    <select class="form-control" id="algor">
+                                        <option selected value="1">RSA</option>
+                                    </select>
+                                  </div>
+                            </div>
+
+                            <!-- key generator -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button type="button" id="genKey" class="btn btn-primary">Generate Key</button>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="privateKey">Private Key</label>
+                                    <textarea class="form-control" id="privateKey" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="publicKey">Public Key</label>
+                                <textarea class="form-control" id="publicKey" rows="4"></textarea>
+                            </div>
+
+                            <div class="col-12 key2" style="display: none;">
+                                <div class="form-group">
+                                    <label for="key2">Key 2</label>
+                                    <input type="text" class="form-control" id="key2">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="key">File</label>
+                                    <input type="file" id="inputPlaintextFile" class="form-control" id="key">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="plainText">Input Text</label>
+                                    <textarea class="form-control" id="plainText" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-light p-2" style="min-height: 110px; max-height: 110px; margin-top: 30px; border-radius: 5px; overflow-y: auto;">
+                                    <p class="text-secondary" id="chiperText"></p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" id="encrypt" class="btn btn-primary">Enkrip</button>
+                                <button type="submit" id="decrypt" class="btn btn-success">Dekrip</button>
+                                <button id="donlot" type="button" id="decrypt" class="btn btn-warning">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
+
+    <script src="./rsa.js"></script>
+    <script src="./vigenere.js"></script>
+    <script src="./auto_vigenere.js"></script>
+    <script src="./extend_vigenere.js"></script>
+    <script src="./playfair_chiper.js"></script>
+    <script src="./super.js"></script>
+    <script src="./affine.js"></script>
+    <script>
+        var encryptBtn = $("#encrypt");
+        var decryptBtn = $("#decrypt");
+        var autoVergeKey = '';
+
+        $('#genKey').on('click', function() {
+            const keys = generate(250);
+            $('#publicKey').val(keys.n.value+"."+keys.e.value)
+            $('#privateKey').val(keys.d.value)
+        })
+
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+
+        $(document).ready(function(){
+            $('#donlot').on('click', function(){
+                download(new Date()+".txt", $('#chiperText').html());
+            });
+
+            $('#algor').on('change', function(){
+                if($(this).val() == 6) {
+                    $('.key2').show();
+                }
+                else {
+                    $('.key2').hide();
+                }
+            })
+
+            encryptBtn.on("click", function(){
+                var plainMsg = $("#plainText");
+
+                if(plainMsg.val() == ""){
+                    alert("Please type both secret message and keyword!");
+                }else{
+                    var algor = $('#algor').val();
+                    if(algor == 1) {
+                        let publicKey = $('#publicKey').val();
+                        publicKey = publicKey.split(".");
+                        const n = publicKey[1]
+                        console.log(n);
+                        const encoded_message = encode(plainMsg.val());
+                        console.log(encoded_message);
+                        const encrypted_message = encrypt(encoded_message, publicKey[0], publicKey[1]);
+                        console.log(encrypted_message);
+                        $('#chiperText').html(encrypted_message.toString());
+                    }
+                }
+            });
+
+            decryptBtn.on("click", function(){
+                var plainMsg = $("#plainText");
+                var keyword = $("#key");
+                var keyword2 = $("#key2");
+
+                if(plainMsg.val() == ""){
+                    alert("Please type both secret message and keyword!");
+                }else{
+                    var algor = $('#algor').val();
+                    if(algor == 1) {
+                        let publicKey = $('#publicKey').val();
+                        publicKey = publicKey.split(".");
+                        publicKey = publicKey[0]
+                        const privateKey = $('#privateKey').val();
+
+                        const decrypted_message = decrypt(plainMsg.val(), privateKey, publicKey);
+                        const decoded_message = decode(decrypted_message);
+                        $('#chiperText').html(decoded_message.toString());
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
