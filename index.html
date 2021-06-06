@@ -8,7 +8,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>RSA</title>
+    <link rel="canonical" href="https://www.debjitbiswas.com/elgamal/" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css">
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/contrib/auto-render.min.js"></script>
+    
+    <title>TB 2 Kripto</title>
   </head>
   <body class="bg-dark">
     <div class="container">
@@ -48,18 +55,10 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Program Enkripsi</h5>
+
+                        <h5 class="card-title">RSA</h5>
 
                         <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="algor">Algoritma</label>
-                                    <select class="form-control" id="algor">
-                                        <option selected value="1">RSA</option>
-                                    </select>
-                                  </div>
-                            </div>
-
                             <!-- key generator -->
                             <div class="col-12">
                                 <div class="form-group">
@@ -110,6 +109,142 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <h5 class="card-title">Elgamal</h5>
+
+                        <div id="wrapper" class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-4">
+                                <div class="panel panel-default machine clearfix" id="aliceMachine">
+                                  <div class="panel-heading"><h3 class="panel-title">Alice's Machine</h3></div>
+                                  <div class="panel-body main">
+                                    <ul class="errors"></ul>
+                                    <form>
+                                      <div class="form-group" id="prime">
+                                        <label for="txtPrime">
+                                          Enter a prime (pA)
+                                          <span class="glyphicon glyphicon-info-sign" title="A prime number (or a prime) is a natural number greater than 1 that has no positive divisors other than 1 and itself."></span>
+                                        </label>
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" id="txtPrime"/>
+                                          
+                                        </div>
+                                        <span class="errorInfo">Please enter a prime number</span>
+                                      </div>
+                      
+                                      <div class="form-group" id="generator">
+                                        <label for="txtG">
+                                          Choose (Alpha)
+                                          <span class="glyphicon glyphicon-info-sign" title="Primitive root of p will be a number such that when x goes from 1 to p-1 then g^x (mod p) goes through all the numbers in the set [1, 2,...,(p-1)] in some order"></span>
+                                        </label>
+                                        <div id="generatorInfo">Click <a href="http://www.bluetulip.org/programs/primitive.html">Here</a> to see list of generators and text below this</div>
+                                       
+                                        <div class="input-group" id="alphaNumber">
+                                          <input type="text" class="form-control" id="txtAlphaNumber"/>
+                                        </div>
+                                      </div>
+                      
+                                      <div class="form-group" id="privateKey">
+                                        <label for="txtPrivateKey">
+                                          Enter Private Key (dA)
+                                          <span class="glyphicon glyphicon-info-sign" title="A number greater than 0 and less than p - 1"></span>
+                                        </label>
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" id="txtPrivateKey"/>
+                                          
+                                        </div>
+                                        <span class="errorInfo">Number should be greater than 0 and less than (p-1)</span>
+                                      </div>
+                                        <p>(0 < dA < (pA-1))</p>
+                      
+                                      <button class="btn btn-success" type="button" onclick="getPublicKey()">
+                                        Generate &amp; Publish Public Key  &nbsp;<span class="glyphicon glyphicon-arrow-right"></span>
+                                      </button>
+                                     
+                                    </form>
+                      
+                                    <div class="panel panel-default" style="margin-top: 10px;">
+                                      <div class="panel-body">
+                                        <div id="messageDisplay">
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                      
+                                    <div class="extrainfo" id="extrainfo">
+                      
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                      
+                              <div class="col-md-4">
+                                <div id="wire">
+                                  <div class="wire-data">
+                                    <div id="keyDisplay" class="display">
+                                      Alice's Public Key<br/>
+                                      <span class="data" id="displayData">--</span>
+                                    </div>
+                      
+                                    <div id="encryptedMsg" class="display">
+                                      Bob's encrypted message<br/>
+                                      <span class="data" id="displayData2">--</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                      
+                              <div class="col-md-4">
+                                <div class="panel panel-default machine clearfix" id="bobMachine">
+                                  <div class="panel-heading"><h3 class="panel-title">Bob's Machine</h3></div>
+                                  <div class="panel-body main">
+                                    <form>
+                                      <div class="form-group" id="encryptPrivate">
+                                        <label for="txtEncryptPrivate">
+                                          Private Key for Encryption (k)
+                                          <span class="glyphicon glyphicon-info-sign" title="Should be greater than or equal to 0 and less than p - 1."></span>
+                                        </label>
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" id="txtEncryptPrivate"/>
+                                          
+                                          <p> 0 <= k < (pA-1)  </p>
+                                        </div>
+                                       
+                                      </div>
+                      
+                                      <div class="form-group" id="message">
+                                        <label for="txtMessage">
+                                          Message (M)
+                                          <span class="glyphicon glyphicon-info-sign" title="Should be greater than 0 and less than or equal to p."></span>
+                                        </label>
+                                        <input type="text" class="form-control" id="txtMessage"/>
+                                        
+                                      </div>
+                      
+                                      <p> 0 < m < pA </p>
+                      
+                                      <button id="encrypt" class="btn btn-success" type="button" onclick="encryption()">
+                                        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp; Encrypt &amp; Send
+                                      </button>
+                      
+                                    </form>
+                                    <div class="extrainfo"></div>
+                                  </div>
+                                </div>
+                                
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -118,14 +253,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
-
+    <script src="elgamal.js"></script>
+    <script src="primes.js"></script>
     <script src="./rsa.js"></script>
-    <script src="./vigenere.js"></script>
-    <script src="./auto_vigenere.js"></script>
-    <script src="./extend_vigenere.js"></script>
-    <script src="./playfair_chiper.js"></script>
-    <script src="./super.js"></script>
-    <script src="./affine.js"></script>
+
     <script>
         var encryptBtn = $("#encrypt");
         var decryptBtn = $("#decrypt");
@@ -150,6 +281,19 @@
             document.body.removeChild(element);
         }
 
+        document.querySelector('#inputPlaintextFile').addEventListener('change', function(evt) {
+            var files = evt.target.files;
+            file = files[0];
+            console.log(file);
+
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                $("#plainText").val(event.target.result.toLowerCase());
+            }
+
+            reader.readAsText(file)
+        }, false);
 
         $(document).ready(function(){
             $('#donlot').on('click', function(){
